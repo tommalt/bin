@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+import sys, os
+
+def main(argv):
+    if len(argv) < 2 or argv[1] == '-h' or argv[1] == '--help':
+        print("Usage: {} /path/to/mongodb.service".format(argv[0]), file=sys.stderr)
+        print("Patches the file to have proper ulimit settings")
+        exit(1)
+    fname = argv[1]
+    ok = os.access(fname, os.R_OK | os.W_OK)
+    if not ok:
+        print("Error: do not have permission to edit {}".format(fname))
+        exit(1)
+
+    things = {
+        "LimitFSIZE": "infinity",
+        "LimitCPU": "infinity",
+        "LimitAS": "infinity",
+        "LimitNOFILE": "64000",
+        "LimitNPROC": "64000",
+    }
+    with open(fname, 'r+') as f:
+        lines = list(filter(None,[l.strip() for l in f.readlines()]))
+        try:
+            begin = lines.index("[Service]")
+        except ValueError:
+            print("Error: [Service] section not found in {}".format(fname))
+            exit(1)
+        begin += 1
+        end = len(lines)
+        for i in range(begin,end):
+            line = lines[i]
+            if line[0] == '[' and line[-1] == ']':
+                end = i
+                break
+        for key in things:
+            index_mask = [l.startswith(key) for l in lines[begin:end]]
+            if any(index_mask):
+                try:
+                    index = index_mask.index(True)
+                except ValueError:
+                    print("Logic error: could not find {} in [Service]. Debug me.".format(key))
+                val = lines.pop(begin+index)
+                end -= 1
+        stuff = [k + '=' + v for k, v in things.items()]
+        for thing in stuff:
+            lines.insert(end, thing)
+            end += 1
+        buf = '\n'.join(lines) + '\n'
+        f.seek(0)
+        f.write(buf)
+        f.truncate()
+        f.close()
+main(sys.argv)
