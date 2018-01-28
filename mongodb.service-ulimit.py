@@ -68,7 +68,7 @@ def main(argv):
         line = lines[index]
         dbpath = line.find("--dbpath")
         if dbpath == -1:
-            line = line + "--dbpath /var/lib/mongodb"
+            line = line + " --dbpath /var/lib/mongodb"
         else:
             try:
                 line = replace_db_path(line, dbpath, '/var/lib/mongodb')
