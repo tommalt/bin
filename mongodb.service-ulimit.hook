@@ -5,7 +5,7 @@ Type = Package
 Target = mongodb
 
 [Action]
-Description = Patches mongodb.service to have proper ulimit settings
+Description = Patching mongodb.service to have proper ulimit settings
 When = PostTransaction
-Exec = python /home/tom/bin/mongodb.service-ulimit.py /usr/lib/systemd/system/mongodb.service
+Exec = /usr/bin/python /home/tom/bin/mongodb.service-ulimit.py /usr/lib/systemd/system/mongodb.service
 Depends = python
