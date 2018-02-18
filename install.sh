@@ -13,4 +13,4 @@ for f in $USRFILES; do
 	cp $f "$BINDIR/$f"
 done
 
-chown tom:tom "$BINDIR"
+chown -R tom:tom "$BINDIR"
