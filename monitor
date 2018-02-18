@@ -1,0 +1,27 @@
+#!/bin/bash
+
+## Monitor files, run a command when any of them are written to
+
+if [ $# -lt 2 ]; then
+	echo -e "Usage: monitor \"[FILE]\" [COMMAND]"
+	echo -e "When one or more of \"[FILE]\" is written, run [COMMAND]"
+	echo -e "Make sure to wrap [FILE] in quotes when using globs"
+	echo -e "In [COMMAND] you can reference FILE, and it will be expanded"
+	echo -e "Examples:"
+	echo -e "  $ monitor main.c gcc FILE"
+	echo -e "  $ monitor \"*.c\" make"
+	exit 1
+fi
+
+cmd="$2"
+inotifywait -q -m -e close_write $1 | while read filename event; do
+	for c in "${@:3}"; do
+		if [ $c == "FILE" ]; then
+			c="$filename"
+		fi
+		cmd="$cmd $c"
+	done
+	echo "command = $cmd"
+	$cmd
+	cmd="$2"
+done
