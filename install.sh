@@ -9,6 +9,7 @@ USRFILES="
 mongodb.service-ulimit.py
 arch-mirrors.sh
 monitor
+i3-set-background
 "
 
 for f in $USRFILES; do
