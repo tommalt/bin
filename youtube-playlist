@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: youtube-playlist [PLAYLIST_URL]"
+	echo "Downloads the youtube playlist to the current directory"
+	echo "Output filename format: (artist)-(song).mp3"
+	exit 1;
+else
+	youtube-dl --extract-audio --audio-format mp3 -o "%(title)s.%(ext)s" "$1"
+fi
+
+# replace the spaces with underscores
+for file in *; do
+	newfile=`echo $file | sed -e 's/[^A-Za-z0-9._-]/_/g' -e 's/_-_/-/g' -e 's/_\./\./g'`
+	mv $file $newfile
+done

@@ -10,6 +10,7 @@ mongodb.service-ulimit.py
 arch-mirrors.sh
 monitor
 i3-set-background
+youtube-playlist
 "
 
 for f in $USRFILES; do
