@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+cat /etc/pacman.d/mirrorlist.pacnew|awk '/## United States/{flag=1;next}/^$/{flag=0}flag'|sed 's/^#//g' > /etc/pacman.d/mirrorlist.tmp
+rankmirrors -n 6 /etc/pacman.d/mirrorlist.tmp > /etc/pacman.d/mirrorlist
