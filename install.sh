@@ -22,6 +22,6 @@ for i in $ignore; do
 done
 files=`eval "$cmd"`
 for f in $files; do
-	cp $f "$BINDIR/$f"
+	install -m755 "$f" "$BINDIR"
 done
 exit 0
