@@ -1,0 +1,49 @@
+#!/bin/bash
+
+usage() {
+	echo 'sed-rename [sed expr] [file...]'
+	echo -e 'sed-rename does the following:\n'
+	echo    '  echo [file...] | while read file'
+	echo    '  do'
+	echo    '      newfile=`echo "$file" | sed [sed expr]`'
+	echo    '      mv "$file" "$newfile"'
+	echo -e '  done\n'
+	echo '[sed expr] is a proper sed command/expression'
+	echo -e '[file...] is optional, being read from stdin if absent\n'
+}
+
+if [ $# -eq 1 ] && [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	usage
+	exit 0
+fi
+
+if [ $# -eq 0 ]; then
+	usage
+	exit 1
+fi
+
+sexpr="$1"
+shift 1
+
+if [ $# -eq 0 ]; then
+	files=`cat`
+else
+	files="$1"
+	shift 1
+	while [ $# -gt 0 ]; do
+		files="$files"$'\n'"$1"
+		shift 1
+	done
+fi
+
+echo "$files" | while read file
+do
+	newfile=`echo "$file" | sed -e "$sexpr"`
+	if [ $? -ne 0 ]; then
+		echo "abort"
+		exit 1
+	fi
+	mv "$file" "$newfile"
+	echo "$newfile"
+done
+
