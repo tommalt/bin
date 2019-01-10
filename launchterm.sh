@@ -6,6 +6,7 @@ if [ -z "$term" ]; then
 	term=urxvt
 fi
 
+term=$(basename $term)
 if [ "$term" = urxvt ]; then
 	if pgrep urxvtd; then
 		term=urxvtc
