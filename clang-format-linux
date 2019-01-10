@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# C/C++ source code formatting similar to Linux Kernel style
+
+cat <<EOT
+ColumnLimit: 120
+BasedOnStyle: LLVM
+IndentWidth: 8
+UseTab: ForIndentation
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: false
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AlwaysBreakTemplateDeclarations: true
+IndentCaseLabels: false
+EOT

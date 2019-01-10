@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ "$#" -lt 1 ]; then
+	echo "Usage: `basename $0` [DIR]..."
+	echo "Count lines of C/C++ source in [DIR]..."
+	exit 1;
+fi
+
+for var in "$@"
+do
+	if [ -d "$1" ]; then
+		find $var -type f -name '*.h*' -o -name '*.c*' | xargs c_count
+		continue;
+	else
+		echo "$var is not a directory"
+	fi
+done

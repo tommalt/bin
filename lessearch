@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$#" -lt 2 ]; then
+	echo "Usage: `basename $0` [PATTERN] [FILES]..."
+	echo "Search [FILES]... for [PATTERN] and xargs all matching files into the less pager"
+	echo "Usefull when you want to grep through some notes"
+	exit;
+fi
+
+echo "${@:2}" | xargs grep "$1" | cut -d':' -f1|sort|uniq| xargs less +/"$1"
+
+
