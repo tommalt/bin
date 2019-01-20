@@ -1,25 +1,26 @@
 #!/bin/sh
 
-# swing.sh
-
-# Given input of the form
-# a1
-# a2
-# a3
-# ...
-# aN
-# b1
-# b2
-# b3
-# ...
-# bN
-# ...
-
-# output of ./swing 7
-# a1 a2 a3 ... aN
-# b1 b2 b3 ... bN
-# ...
-
+if [ "$1" = -h ] || [ "$1" = --help ]; then
+	echo 'usage: $(basename $0) <NUM>'
+	echo ''
+	echo '  transform every <NUM> rows into a single row'
+	echo '  as if to swing the Nth row up and to the right'
+	echo '  taking all the preceding rows with it'
+	echo ''
+	echo 'example'
+	echo '  $ cat input'
+	echo '  a1'
+	echo '  a2'
+	echo '  a3'
+	echo '  b1'
+	echo '  b2'
+	echo '  b3'
+	echo "  $ $(basename $0) 3 < input"
+	echo '  a1 a2 a3'
+	echo '  b1 b2 b3'
+	echo ''
+	exit 0
+fi
 
 n=2
 if [ ! -z "$1" ]; then
