@@ -1,0 +1,33 @@
+#!/bin/bash
+
+usage() {
+	echo "usage: $(basename $0) <package_name>"
+	echo ''
+	echo 'show the files belonging to <package_name>'
+	echo ''
+	echo "output is the same as 'pacman -Ql <package_name>',"
+	echo 'which only works if the package is currently installed'
+	echo ''
+	echo 'pac-file works for packages that are not installed'
+	echo 'on the current machine by fetching the file list from'
+	echo 'the archlinux repos'
+	echo ''
+	echo 'configuration is in the source code'
+	echo ''
+}
+
+if [ -z "$1" ]; then
+	usage
+	exit 1
+fi
+
+urlbase='https://www.archlinux.org/packages'
+pkgname="$1"
+pkginfo=$(pacman -Si "$pkgname")
+repo=$(echo "$pkginfo" | grep '^Repository' | cut -d':' -f2 | sed 's/^ \(.*\)/\1/')
+arch=$(echo "$pkginfo" | grep '^Architecture' | cut -d':' -f2 | sed 's/^ \(.*\)/\1/')
+url="$urlbase/$repo/$arch/$pkgname/files/"
+files=$(curl "$url" 2>/dev/null | grep '^<li' | cut -d'>' -f2 | sed 's/<\/li$//')
+for file in $files; do
+	echo "$pkgname /$file"
+done
