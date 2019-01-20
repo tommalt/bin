@@ -1,0 +1,15 @@
+#!/bin/sh
+
+pkgs=$(pacman -Qi | grep '^Name\|^Installed Size'| cut -d':' -f2 | sed 's/^ //' | swing 2)
+units=$(echo "$pkgs" | awk '{print $3}' | sort -r | uniq) # Mib KiB B
+
+i=0
+for u in $units; do
+	i=$((i+1))
+	pkgs_[$i]=$(grep "\b$u\b$" <<< "$pkgs" | sort -nrk2)
+done
+
+for key in "${!pkgs_[@]}"; do
+	echo "${pkgs_[$key]}"
+done
+

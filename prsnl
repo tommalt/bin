@@ -1,0 +1,24 @@
+#!/bin/bash
+
+info=
+if [ "$1" = -i ]; then
+	info=-i
+	shift
+fi
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 [-i] <package-name>"
+	exit 1;
+fi
+
+for f in `echo n | sudo pacman -Rsn $1 2>/dev/null | grep '^Packages' | cut -d' ' -f3-`; do
+	f=`echo $f | sed 's/-[0-9].*//'`
+
+	if [ ! -z "$info" ]; then
+		pacman -Qi $f
+	else
+		pacman -Q $f
+	fi
+done;
+
+

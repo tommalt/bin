@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# swing.sh
+
+# Given input of the form
+# a1
+# a2
+# a3
+# ...
+# aN
+# b1
+# b2
+# b3
+# ...
+# bN
+# ...
+
+# output of ./swing 7
+# a1 a2 a3 ... aN
+# b1 b2 b3 ... bN
+# ...
+
+
+n=2
+if [ ! -z "$1" ]; then
+	n=$1
+fi
+
+awk "ORS=NR%$n?FS:RS"
