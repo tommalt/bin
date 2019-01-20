@@ -7,7 +7,7 @@ if [ "$1" = -i ]; then
 fi
 
 if [ $# -lt 1 ]; then
-	echo "Usage: $0 [-i] <package-name>"
+	echo "Usage: $(basename $0) [-i] <package-name>"
 	exit 1;
 fi
 
